@@ -8,6 +8,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       doneContent: {
         type: DataTypes.TEXT,
+        defaultValue: 'OK',
       },
       duration: {
         type: DataTypes.INTEGER.UNSIGNED,
