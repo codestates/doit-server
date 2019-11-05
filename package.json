@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "reset": "node utils/resetTables.js"
   },
   "repository": {
     "type": "git",

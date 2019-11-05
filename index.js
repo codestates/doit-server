@@ -5,9 +5,14 @@ const cookieParser = require('cookie-parser');
 const expressSession = require('express-session');
 const dotenv = require('dotenv');
 
+const db = require('./models');
+
 dotenv.config();
+
 const app = express();
 const port = process.env.PORT || 8085;
+
+db.sequelize.sync();
 
 app.use(morgan('dev'));
 app.use(
