@@ -4,15 +4,18 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const expressSession = require('express-session');
 const dotenv = require('dotenv');
+const passport = require('passport');
 
+const passportConfig = require('./passport');
 const db = require('./models');
+const userRouter = require('./routes/user');
 
 dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 8085;
-
 db.sequelize.sync();
+passportConfig();
 
 app.use(morgan('dev'));
 app.use(
@@ -36,6 +39,10 @@ app.use(
     },
   }),
 );
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use('/api/user', userRouter);
 
 app.listen(port, () => {
   console.log(`http://localhost:${port}`);
