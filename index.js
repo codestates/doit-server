@@ -6,6 +6,8 @@ const expressSession = require('express-session');
 const dotenv = require('dotenv');
 
 const db = require('./models');
+const userRouter = require('./routes/user');
+const todoRouter = require('./routes/todo');
 
 dotenv.config();
 
@@ -36,6 +38,9 @@ app.use(
     },
   }),
 );
+
+app.use('/api/user', userRouter);
+app.use('/api/todo', todoRouter);
 
 app.listen(port, () => {
   console.log(`http://localhost:${port}`);
