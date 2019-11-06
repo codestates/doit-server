@@ -26,3 +26,5 @@ db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
 module.exports = db;
+
+// 자동으로 테이블 이름들 복수형 되는 것 뭐지??

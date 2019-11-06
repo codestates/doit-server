@@ -9,6 +9,7 @@ const passport = require('passport');
 const passportConfig = require('./passport');
 const db = require('./models');
 const userRouter = require('./routes/user');
+const todoRouter = require('./routes/todo');
 
 dotenv.config();
 
@@ -43,6 +44,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/api/user', userRouter);
+
+app.use('/api/user', userRouter);
+app.use('/api/todo', todoRouter);
 
 app.listen(port, () => {
   console.log(`http://localhost:${port}`);
