@@ -14,6 +14,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
       },
+      // isComplete: {
+      //   type: DataTypes.BOOLEAN,
+      //   allowNull: false,
+      //   defaultValue: false,
+      // },
     },
     {
       timestamps: true,
@@ -29,6 +34,7 @@ module.exports = (sequelize, DataTypes) => {
 
     db.Todo.hasMany(db.Timeline, {
       sourceKey: 'id',
+      onDelete: 'cascade',
     });
   };
 
