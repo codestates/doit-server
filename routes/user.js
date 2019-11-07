@@ -1,11 +1,11 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const passport = require('passport');
-const router = express.Router();
 
 const db = require('../models');
 const { isLoggedIn } = require('./middleware');
 
+const router = express.Router();
 // POST api/user/signup
 router.post('/signup', async (req, res, next) => {
   const { email, nickname, password } = req.body;
@@ -41,6 +41,7 @@ router.post('/login', (req, res, next) => {
       if (loginError) {
         return next(loginError);
       }
+
       const result = {
         userId: req.user.id,
         email: req.user.email,
@@ -62,13 +63,11 @@ router.post('/logout', (req, res) => {
 
 // GET api/user
 router.get('/', isLoggedIn, async (req, res) => {
-  res
-    .status(200)
-    .json({
-      code: 200,
-      message: 'User Info Inquiry seccess.',
-      data: req.user,
-    });
+  res.status(200).json({
+    code: 200,
+    message: 'User Info Inquiry seccess.',
+    data: req.user,
+  });
 });
 
 module.exports = router;
