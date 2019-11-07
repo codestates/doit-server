@@ -4,8 +4,10 @@ const passport = require('passport');
 const router = express.Router();
 
 const db = require('../models');
+const { isLoggedIn } = require('./middleware');
 
-router.post('/', async (req, res, next) => {
+// POST api/user/signup
+router.post('/signup', async (req, res, next) => {
   const { email, nickname, password } = req.body;
   try {
     const exUser = await db.User.findOne({ where: { email } });
@@ -25,6 +27,7 @@ router.post('/', async (req, res, next) => {
   }
 });
 
+// POST api/user/login
 router.post('/login', (req, res, next) => {
   passport.authenticate('local', (error, user, info) => {
     if (error) {
@@ -50,33 +53,22 @@ router.post('/login', (req, res, next) => {
   })(req, res, next);
 });
 
+// POST api/user/logout
 router.post('/logout', (req, res) => {
   req.logout();
   req.session.destroy();
   res.status(200).json({ code: 200, message: 'Logout success' });
 });
 
-router.get('/:userId', async (req, res) => {
-  try {
-    if (!req.user) {
-      res.status(200).json({
-        code: 200,
-        message: 'there is no such user',
-        data: null,
-      });
-    } else {
-      res.status(200).json({
-        code: 200,
-        message: 'user identified',
-        data: req.user,
-      });
-    }
-  } catch {
-    res.status(500).json({
-      code: 500,
-      message: 'failed to get user',
+// GET api/user
+router.get('/', isLoggedIn, async (req, res) => {
+  res
+    .status(200)
+    .json({
+      code: 200,
+      message: 'User Info Inquiry seccess.',
+      data: req.user,
     });
-  }
 });
 
 module.exports = router;
