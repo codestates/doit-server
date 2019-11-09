@@ -34,6 +34,9 @@
     "sequelize-cli": "^5.5.1"
   },
   "devDependencies": {
-    "nodemon": "^1.19.4"
+    "mocha": "^6.2.2",
+    "nodemon": "^1.19.4",
+    "should": "^13.2.3",
+    "supertest": "^4.0.2"
   }
 }
