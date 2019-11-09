@@ -42,7 +42,8 @@ router.patch(
       transaction = await db.sequelize.transaction();
       await db.Todo.update(
         { doneContent, isComplete: true },
-        { where: { id: todoId, userId: req.user.id } },
+        // { where: { id: todoId, userId: req.user.id } },
+        { where: { id: todoId } },
         { transaction },
       );
       await db.Timeline.update(
@@ -71,7 +72,8 @@ router.patch(
 router.get('/:todoId', isLoggedIn, async (req, res) => {
   try {
     const todo = await db.Todo.findOne({
-      where: { id: req.params.todoId, userId: req.user.id },
+      // where: { id: req.params.todoId, userId: req.user.id },
+      where: { id: req.params.todoId },
       attributes: [
         'id',
         'todoContent',
@@ -99,14 +101,16 @@ router.get('/:todoId', isLoggedIn, async (req, res) => {
 router.delete('/:todoId', isLoggedIn, async (req, res) => {
   try {
     const todo = await db.Todo.findOne({
-      where: { id: req.params.todoId, userId: req.user.id },
+      // where: { id: req.params.todoId, userId: req.user.id },
+      where: { id: req.params.todoId },
     });
     if (!todo) {
       return res.status(400).json({ code: 400, message: 'todo not found.' });
     }
 
     await db.Todo.destroy({
-      where: { id: req.params.todoId, userId: req.user.id },
+      // where: { id: req.params.todoId, userId: req.user.id },
+      where: { id: req.params.todoId },
     });
     res.status(200).json({ code: 200, message: 'todo delete success.' });
   } catch (error) {

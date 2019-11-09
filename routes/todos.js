@@ -17,7 +17,8 @@ router.get('/:date', isLoggedIn, async (req, res) => {
           '=',
           date.format('YYYYMMDD'),
         ),
-        { userId: req.user.id },
+        // { userId: req.user.id },
+        { userId: 3 },
       ],
       attributes: [
         'id',

@@ -14,7 +14,8 @@ const createTodo = async (req, res, next) => {
       {
         todoContent: validContent,
         duration: validDuration,
-        userId: req.user.id,
+        // userId: req.user.id,
+        userId: 3,
       },
       { transaction },
     );
