@@ -4,11 +4,11 @@ dotenv.config();
 
 module.exports = {
   development: {
-    username: process.env.DEV_USERNAME,
-    password: process.env.DEV_PASSWORD,
-    database: process.env.DEV_DATABASE,
-    host: process.env.DEV_HOST,
-    dialect: process.env.DEV_DIALECT,
+    username: process.env.DEV_USERNAME1,
+    password: process.env.DEV_PASSWORD1,
+    database: process.env.DEV_DATABASE1,
+    host: process.env.DEV_HOST1,
+    dialect: process.env.DEV_DIALECT1,
     options: {
       timezone: '+09:00',
     },
