@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/codestates/doit-server#readme",
   "dependencies": {
+    "auto-sni": "^2.3.2",
     "bcrypt": "^3.0.6",
     "cookie-parser": "^1.4.4",
     "cors": "^2.8.5",

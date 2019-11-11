@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const expressSession = require('express-session');
 const dotenv = require('dotenv');
 const passport = require('passport');
+const createServer = require('auto-sni');
 
 const passportConfig = require('./passport');
 const db = require('./models');
@@ -48,8 +49,13 @@ app.use('/api/user', userRouter);
 app.use('/api/todo', todoRouter);
 app.use('/api/todos', todosRouter);
 
-app.listen(port, () => {
-  console.log(`listening to http://localhost:${port}`);
-});
+createServer(
+  { email: 'bfsudong@gmail.com', domains: 'api.mygraphr.com', agreeTos: true },
+  app,
+);
+
+// app.listen(port, () => {
+//   console.log(`listening to http://localhost:${port}`);
+// });
 
 module.exports = app;
