@@ -16,7 +16,7 @@ const todosRouter = require('./routes/todos');
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT || 8085;
+const port = process.env.PORT || 80;
 db.sequelize.sync();
 passportConfig();
 
