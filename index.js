@@ -49,7 +49,7 @@ app.use('/api/todo', todoRouter);
 app.use('/api/todos', todosRouter);
 
 app.listen(port, () => {
-  console.log(`http://localhost:${port}`);
+  console.log(`listening to http://localhost:${port}`);
 });
 
 module.exports = app;

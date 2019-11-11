@@ -27,14 +27,15 @@ const createTodo = async (req, res, next) => {
       { transaction },
     );
     await transaction.commit();
-    return res.status(200).json({
+    res.status(200).json({
+      // return을 붙일 필요가 있나?
       code: 200,
       message: 'todo create success',
       data: { todoId: newTodo.id, timelineId: newTimeline.id },
     });
   } catch (error) {
     console.error(error);
-    transaction && (await transaction.rollback());
+    transaction && (await transaction.rollback()); // 이렇게 써줄 이유?
     return res.status(500).json({
       code: 500,
       message: `todo create fail. ${error.message}`,

@@ -3,12 +3,22 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 module.exports = {
-  development: {
-    username: process.env.DEV_USERNAME1,
-    password: process.env.DEV_PASSWORD1,
-    database: process.env.DEV_DATABASE1,
-    host: process.env.DEV_HOST1,
-    dialect: process.env.DEV_DIALECT1,
+  devLocal: {
+    username: process.env.DEVLOCAL_USERNAME,
+    password: process.env.DEVLOCAL_PASSWORD,
+    database: process.env.DEVLOCAL_DATABASE,
+    host: process.env.DEVLOCAL_HOST,
+    dialect: process.env.DEVLOCAL_DIALECT,
+    options: {
+      timezone: '+09:00',
+    },
+  },
+  devAWS: {
+    username: process.env.DEVAWS_USERNAME,
+    password: process.env.DEVAWS_PASSWORD,
+    database: process.env.DEVAWS_DATABASE,
+    host: process.env.DEVAWS_HOST,
+    dialect: process.env.DEVAWS_DIALECT,
     options: {
       timezone: '+09:00',
     },

@@ -65,7 +65,7 @@ router.post('/logout', (req, res) => {
 router.get('/', isLoggedIn, async (req, res) => {
   res.status(200).json({
     code: 200,
-    message: 'User Info Inquiry seccess.',
+    message: 'User Info Inquiry success.',
     data: req.user,
   });
 });
