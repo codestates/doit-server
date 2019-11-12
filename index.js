@@ -7,6 +7,10 @@ const dotenv = require('dotenv');
 const passport = require('passport');
 // const https = require('https');
 
+const http = require('http');
+const https = require('https');
+const fs = require('fs');
+
 const passportConfig = require('./passport');
 const db = require('./models');
 const userRouter = require('./routes/user');
@@ -85,9 +89,6 @@ const credentials = {
   cert: certificate,
   ca: ca,
 };
-
-const http = require('http');
-const https = require('https');
 
 const httpServer = http.createServer(app);
 const httpsServer = https.createServer(credentials, app);
