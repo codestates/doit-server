@@ -20,7 +20,7 @@ const todosRouter = require('./routes/todos');
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT || 443;
+const port = process.env.PORT || 80;
 db.sequelize.sync();
 passportConfig();
 
@@ -71,42 +71,42 @@ app.use('/api/todo', todoRouter);
 app.use('/api/todos', todosRouter);
 
 // Certificate
-const privateKey = fs.readFileSync(
-  '/etc/letsencrypt/live/api.mygraphr.com/privkey.pem',
-  'utf8',
-);
-const certificate = fs.readFileSync(
-  '/etc/letsencrypt/live/api.mygraphr.com/cert.pem',
-  'utf8',
-);
-const ca = fs.readFileSync(
-  '/etc/letsencrypt/live/api.mygraphr.com/chain.pem',
-  'utf8',
-);
+// const privateKey = fs.readFileSync(
+//   '/etc/letsencrypt/live/api.mygraphr.com/privkey.pem',
+//   'utf8',
+// );
+// const certificate = fs.readFileSync(
+//   '/etc/letsencrypt/live/api.mygraphr.com/cert.pem',
+//   'utf8',
+// );
+// const ca = fs.readFileSync(
+//   '/etc/letsencrypt/live/api.mygraphr.com/chain.pem',
+//   'utf8',
+// );
 
-const credentials = {
-  key: privateKey,
-  cert: certificate,
-  ca: ca,
-};
+// const credentials = {
+//   key: privateKey,
+//   cert: certificate,
+//   ca: ca,
+// };
 
-const httpServer = http.createServer(app);
-const httpsServer = https.createServer(credentials, app);
+// const httpServer = http.createServer(app);
+// const httpsServer = https.createServer(credentials, app);
 
-httpServer.listen(80, () => {
-  console.log('HTTP Server running on port 80');
-});
+// httpServer.listen(80, () => {
+//   console.log('HTTP Server running on port 80');
+// });
 
-httpsServer.listen(443, () => {
-  console.log('HTTPS Server running on port 443');
-});
+// httpsServer.listen(443, () => {
+//   console.log('HTTPS Server running on port 443');
+// });
 
 // https
 //   .createServer(lex.httpsOptions, lex.middleware(app))
 //   .listen(process.env.SSL_PORT || 443);
 
-// app.listen(port, () => {
-//   console.log(`listening to http://localhost:${port}`);
-// });
+app.listen(port, () => {
+  console.log(`listening to http://localhost:${port}`);
+});
 
 module.exports = app;
