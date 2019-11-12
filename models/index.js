@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 
-const env = process.env.NODE_ENV || 'devLocal';
+const env = process.env.NODE_ENV || 'devAWS';
 const config = require('../config/config')[env];
 
 const db = {};
