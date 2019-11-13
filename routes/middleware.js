@@ -1,11 +1,11 @@
 const db = require('../models');
 
 exports.isLoggedIn = (req, res, next) => {
-  // if (req.isAuthenticated()) {
-  //   next();
-  // } else {
-  //   res.status(401).json({ code: 401, message: 'Plz login.' });
-  // }
+  if (req.isAuthenticated()) {
+    next();
+  } else {
+    res.status(401).json({ code: 401, message: 'Plz login.' });
+  }
   next();
 };
 
@@ -22,8 +22,7 @@ exports.isNotLoggedIn = (req, res, next) => {
 exports.isExistTodo = async (req, res, next) => {
   try {
     const todo = await db.Todo.findOne({
-      // where: { id: req.body.todoId, userId: req.user.id },
-      where: { id: req.body.todoId },
+      where: { id: req.body.todoId, userId: req.user.id },
     });
     if (todo) {
       next();
@@ -32,7 +31,9 @@ exports.isExistTodo = async (req, res, next) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ code: 500, message: 'Server error.' });
+    res
+      .status(500)
+      .json({ code: 500, message: 'Server error while isExistTodo' });
   }
 };
 

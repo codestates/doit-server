@@ -70,6 +70,10 @@ app.use('/api/user', userRouter);
 app.use('/api/todo', todoRouter);
 app.use('/api/todos', todosRouter);
 
+app.use('/health', (req, res) => {
+  res.status(200).send('hello world');
+});
+
 // Certificate
 // const privateKey = fs.readFileSync(
 //   '/etc/letsencrypt/live/api.mygraphr.com/privkey.pem',
