@@ -5,7 +5,7 @@ const validate = {};
 validate.content = (content) => {
   const result = content.trim();
   if (!result.length) {
-    throw new Error('Content 내용 오류.');
+    throw new Error('Content 내용 없음 오류.');
   }
   return result;
 };
