@@ -41,7 +41,7 @@ app.use(
 		// corsOptionsDelegate,
 		{
 			// origin: true,
-			origin: 'http://mygraphr.com',
+			origin: 'http://mygraphr.com:3000',
 			credentials: true,
 		},
 	),
