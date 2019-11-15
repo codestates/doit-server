@@ -25,14 +25,12 @@ const getTodos = async (req, res) => {
       ],
     });
 
-    return res
+    res
       .status(200)
       .json({ code: 200, message: 'todos inquiry success.', data: todos });
   } catch (error) {
     console.error(error);
-    return res
-      .status(500)
-      .json({ code: 500, message: 'todos inquiry failed.' });
+    res.status(500).json({ code: 500, message: 'todos inquiry failed.' });
   }
 };
 

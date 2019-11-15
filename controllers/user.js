@@ -5,10 +5,13 @@ const db = require('../models');
 
 const signUp = async (req, res, next) => {
   const { email, nickname, password } = req.body;
+  // 각각에 대한 validation. 특히 email.
   try {
     const exUser = await db.User.findOne({ where: { email } });
     if (exUser) {
-      return res.status(403).json({ code: 403, message: 'Already exist.' });
+      return res
+        .status(403)
+        .json({ code: 403, message: 'This email is already registered.' });
     }
     const passwordHash = await bcrypt.hash(password, 10);
     await db.User.create({
@@ -16,10 +19,12 @@ const signUp = async (req, res, next) => {
       nick: nickname,
       password: passwordHash,
     });
-    return res.status(200).json({ code: 200, message: 'User create.' });
+    res
+      .status(200)
+      .json({ code: 200, message: 'User registered successfully.' });
   } catch (error) {
     console.error(error);
-    return next(error);
+    next(error); // 이렇게 넘기면 어디로?
   }
 };
 
@@ -27,9 +32,10 @@ const logIn = (req, res, next) => {
   passport.authenticate('local', (error, user, info) => {
     if (error) {
       console(error);
-      return next(error);
+      return next(error); // 이렇게 넘기면 어디로?
     }
     if (info) {
+      console.log(info.reason);
       return res.status(401).json({ code: 401, message: info.reason });
     }
     return req.login(user, (loginError) => {

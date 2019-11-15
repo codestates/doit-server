@@ -1,25 +1,24 @@
 const db = require('../models');
 
-exports.isLoggedIn = (req, res, next) => {
+const isLoggedIn = (req, res, next) => {
   if (req.isAuthenticated()) {
+    //isAuthenticated where ??
     next();
   } else {
-    res.status(401).json({ code: 401, message: 'Plz login.' });
+    res.status(401).json({ code: 401, message: 'Please login first.' });
   }
-  next();
+  next(); // ???
 };
 
-exports.isNotLoggedIn = (req, res, next) => {
+const isNotLoggedIn = (req, res, next) => {
   if (!req.isAuthenticated()) {
     next();
   } else {
-    res
-      .status(401)
-      .json({ code: 401, message: 'The logged in user is not available.' });
+    res.status(401).json({ code: 401, message: 'You should logout first' });
   }
 };
 
-exports.isExistTodo = async (req, res, next) => {
+const isExistTodo = async (req, res, next) => {
   try {
     const todo = await db.Todo.findOne({
       where: { id: req.body.todoId, userId: req.user.id },
@@ -37,7 +36,7 @@ exports.isExistTodo = async (req, res, next) => {
   }
 };
 
-exports.isExistTimeline = async (req, res, next) => {
+const isExistTimeline = async (req, res, next) => {
   try {
     const { todoId, timelineId } = req.body;
     const timeline = await db.Timeline.findOne({
@@ -58,3 +57,5 @@ exports.isExistTimeline = async (req, res, next) => {
     res.status(500).json({ code: 500, message: 'Server error.' });
   }
 };
+
+module.exports = { isLoggedIn, isNotLoggedIn, isExistTodo, isExistTimeline };

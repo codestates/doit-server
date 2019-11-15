@@ -1,6 +1,10 @@
 const router = require('express').Router();
 
-const { isLoggedIn, isExistTodo, isExistTimeline } = require('./middleware');
+const {
+  isLoggedIn,
+  isExistTodo,
+  isExistTimeline,
+} = require('../controllers/middleware');
 const {
   createTodo,
   pauseTodo,
