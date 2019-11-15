@@ -21,29 +21,29 @@ passportConfig();
 
 app.use(morgan('dev'));
 
-var whitelist = [
-	'http://mygraphr.com',
-	'https://youdoit.space',
-	'http://localhost:3000',
-];
-var corsOptionsDelegate = function(req, callback) {
-	var corsOptions;
-	if (whitelist.indexOf(req.header('Origin')) !== -1) {
-		corsOptions = { origin: true, credentials: true }; // reflect (enable) the requested origin in the CORS response
-	} else {
-		corsOptions = { origin: false }; // disable CORS for this request
-	}
-	callback(null, corsOptions); // callback expects two parameters: error and options
-};
+// var whitelist = [
+// 	'http://mygraphr.com',
+// 	'https://youdoit.space',
+// 	'http://localhost:3000',
+// ];
+// var corsOptionsDelegate = function(req, callback) {
+// 	var corsOptions;
+// 	if (whitelist.indexOf(req.header('Origin')) !== -1) {
+// 		corsOptions = { origin: true, credentials: true }; // reflect (enable) the requested origin in the CORS response
+// 	} else {
+// 		corsOptions = { origin: false }; // disable CORS for this request
+// 	}
+// 	callback(null, corsOptions); // callback expects two parameters: error and options
+// };
 
 app.use(
 	cors(
-		corsOptionsDelegate,
-		// {
-		// origin: true,
-		// origin: 'http://mygraphr.com',
-		// credentials: true,
-		// }
+		// corsOptionsDelegate,
+		{
+			// origin: true,
+			origin: 'http://mygraphr.com',
+			credentials: true,
+		},
 	),
 );
 app.use(express.json());
