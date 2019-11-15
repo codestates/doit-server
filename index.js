@@ -20,26 +20,39 @@ db.sequelize.sync();
 passportConfig();
 
 app.use(morgan('dev'));
+
+// var whitelist = ['http://example1.com', 'http://example2.com']
+// var corsOptionsDelegate = function (req, callback) {
+//   var corsOptions;
+//   if (whitelist.indexOf(req.header('Origin')) !== -1) {
+//     corsOptions = { origin: true, credentials: true, } // reflect (enable) the requested origin in the CORS response
+//   }else{
+//     corsOptions = { origin: false } // disable CORS for this request
+//   }
+//   callback(null, corsOptions) // callback expects two parameters: error and options
+// }
+
 app.use(
-  cors({
-    origin: true,
-    credentials: true,
-  }),
+	cors({
+		// origin: true,
+		origin: 'http://localhost:3000',
+		credentials: true,
+	}),
 );
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(
-  expressSession({
-    resave: false,
-    saveUninitialized: false,
-    secret: process.env.COOKIE_SECRET,
-    name: 'domybest',
-    cookie: {
-      httpOnly: true,
-      secure: false,
-    },
-  }),
+	expressSession({
+		resave: false,
+		saveUninitialized: false,
+		secret: process.env.COOKIE_SECRET,
+		name: 'domybest',
+		cookie: {
+			httpOnly: true,
+			secure: false,
+		},
+	}),
 );
 app.use(passport.initialize());
 app.use(passport.session());
@@ -49,11 +62,11 @@ app.use('/api/todo', todoRouter);
 app.use('/api/todos', todosRouter);
 
 app.use('/health', (req, res) => {
-  res.status(200).send('hello world');
+	res.status(200).send('hello world');
 });
 
 app.listen(port, () => {
-  console.log(`listening to http://localhost:${port}`);
+	console.log(`listening to http://localhost:${port}`);
 });
 
 module.exports = app;
