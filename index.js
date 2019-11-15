@@ -35,7 +35,7 @@ app.use(morgan('dev'));
 app.use(
 	cors({
 		// origin: true,
-		origin: 'http://localhost:3000',
+		origin: 'http://mygraphr.com',
 		credentials: true,
 	}),
 );

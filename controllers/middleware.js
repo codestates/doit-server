@@ -7,7 +7,7 @@ const isLoggedIn = (req, res, next) => {
   } else {
     res.status(401).json({ code: 401, message: 'Please login first.' });
   }
-  next(); // ???
+  // next(); 
 };
 
 const isNotLoggedIn = (req, res, next) => {
