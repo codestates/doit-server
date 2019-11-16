@@ -1,7 +1,7 @@
 const should = require('should');
 const moment = require('moment');
 
-const validate = require('./validate')
+const validate = require('./validate');
 
 describe('controllers/todo.js의 validateContent 함수는 ', () => {
   it('입력 인자를 trim 한다.', () => {
@@ -22,7 +22,7 @@ describe('controllers/todo.js의 validateTimestamp 함수는 ', () => {
     result.should.eql(moment('2019-12-31 12:12:12', dateFormat, true));
   });
 
-  it('YYYY-MM-DD HH:mm:ss 이외의 형식이 입력되면 Error thwor.', () => {
+  it('YYYY-MM-DD HH:mm:ss 이외의 형식이 입력되면 Error throw.', () => {
     (() => {
       validate.timestamp('2019-12-31 12:12');
     }).should.throw('현재 시간 오류.');
@@ -48,14 +48,20 @@ describe('controllers/todo.js의 validateDuration 함수는 ', () => {
   });
 
   it('25 미만의 숫자를 인자로 받으면 Error throw.', () => {
-    (() => {validate.duration(24)}).should.throw('타이머 시간 설정 오류.');
+    (() => {
+      validate.duration(24);
+    }).should.throw('타이머 시간 설정 오류.');
   });
 
   it('60 초과의 숫자를 인자로 받으면 Error throw.', () => {
-    (() => {validate.duration(61)}).should.throw('타이머 시간 설정 오류.');
+    (() => {
+      validate.duration(61);
+    }).should.throw('타이머 시간 설정 오류.');
   });
 
   it('숫자가 아닌 값을 인자로 받으면 Error throw.', () => {
-    (() => {validate.duration('a')}).should.throw('타이머 시간 설정 오류.');
+    (() => {
+      validate.duration('a');
+    }).should.throw('타이머 시간 설정 오류.');
   });
 });
