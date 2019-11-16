@@ -8,24 +8,22 @@ const passport = require('passport');
 
 const passportConfig = require('./passport');
 const db = require('./models');
-const userRouter = require('./routes/user');
-const todoRouter = require('./routes/todo');
-const todosRouter = require('./routes/todos');
+const routes = require('./routes');
 
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT || 8085;
+const port = process.env.PORT;
 db.sequelize.sync();
 passportConfig();
 
 const env = process.env.NODE_ENV === 'production';
 
-app.use(morgan('dev'));
+env ? app.use(morgan('combined')) : app.use(morgan('dev'));
 
 app.use(
 	cors({
-		origin: env ? 'http://doitreviews.com:3000' : true, // 전부 다 허용도 ok?
+		origin: env ? 'http://doitreviews.com:3000' : true,
 		credentials: true,
 	}),
 );
@@ -49,16 +47,14 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/api/user', userRouter);
-app.use('/api/todo', todoRouter);
-app.use('/api/todos', todosRouter);
+app.use('/api', routes);
 
 app.use('/health', (req, res) => {
 	res.status(200).send('hello world');
 });
 
 app.listen(port, () => {
-	console.log(`listening to http://localhost:${port}`);
+	console.log(`listening to ${port} port`);
 });
 
 module.exports = app;
