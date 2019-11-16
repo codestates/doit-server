@@ -22,27 +22,27 @@ const env = process.env.NODE_ENV === 'production';
 env ? app.use(morgan('combined')) : app.use(morgan('dev'));
 
 app.use(
-	cors({
-		origin: env ? 'http://doitreviews.com:3000' : true,
-		credentials: true,
-	}),
+  cors({
+    origin: env ? 'http://doitreviews.com:3000' : true,
+    credentials: true,
+  }),
 );
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(
-	expressSession({
-		resave: false,
-		saveUninitialized: false,
-		secret: process.env.COOKIE_SECRET,
-		name: 'domybest',
-		cookie: {
-			httpOnly: true,
-			secure: false,
-			sameSite: false,
-			domain: env ? '.doitreviews.com' : '',
-		},
-	}),
+  expressSession({
+    resave: false,
+    saveUninitialized: false,
+    secret: process.env.COOKIE_SECRET,
+    name: 'domybest',
+    cookie: {
+      httpOnly: true,
+      secure: false,
+      sameSite: false,
+      domain: env ? '.doitreviews.com' : '',
+    },
+  }),
 );
 app.use(passport.initialize());
 app.use(passport.session());
@@ -50,11 +50,11 @@ app.use(passport.session());
 app.use('/api', routes);
 
 app.use('/health', (req, res) => {
-	res.status(200).send('hello world');
+  res.status(200).send('hello world');
 });
 
 app.listen(port, () => {
-	console.log(`listening to ${port} port`);
+  console.log(`listening to ${port} port`);
 });
 
 module.exports = app;
