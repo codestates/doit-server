@@ -16,7 +16,7 @@ const signUp = async (req, res, next) => {
     const passwordHash = await bcrypt.hash(password, 10);
     await db.User.create({
       email,
-      nick: nickname,
+      nickname,
       password: passwordHash,
     });
     res
@@ -46,7 +46,7 @@ const logIn = (req, res, next) => {
       const result = {
         userId: req.user.id,
         email: req.user.email,
-        nickname: req.user.nick,
+        nickname: req.user.nickname,
       };
       return res
         .status(200)
