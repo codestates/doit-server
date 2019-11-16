@@ -1,7 +1,11 @@
 # Doit-server
 
 - 본 파일은 Doit 프로그램의 API 서버 파일입니다.
-- Doit 프로그램을 사용하기 위해서는 본 파일과 상관없이 Doit 클라이언트의 주소 (https://youdoit.space)에 접속하여 사용할 수 있으며, 개인적으로 local에서 실행시키고자 한다면 본 파일과 함께 Doit 클라이언트 파일을 함께 다운 받으시기 바라며 mysql이 깔려 있어야 합니다.
+- Doit 프로그램을 사용하기 위해서는 본 파일과 상관없이 Doit 클라이언트의 주소 (https://youdoit.space)에 접속하여 사용할 수 있습니다.
+
+## Demo로 local에서 실행을 위한 선결 조건
+
+- 개인적으로 local에서 실행시키고자 한다면 본 파일과 함께 Doit 클라이언트 파일(https://github.com/codestates/doit-client.git)을 함께 다운 받으시기 바라며 mysql이 깔려 있어야 합니다.
 
 ## local에서 프로그램을 실행시키는 법
 
@@ -19,7 +23,7 @@
 
 3. npm i 를 하여 package.json의 module들을 install 합니다.
 4. npx sequelize db:create를 터미널에 입력하여 mysql에 db schema를 생성합니다.
-5. (option) 본 파일에는 기본 test data가 있습니다. 이 data들을 입력하고 싶다면 npx sequelize db:seed:all 을 입력합니다.
+5. (option) 본 파일의 seeders 디렉토리에는 기본 test data가 있습니다. 이 data들을 입력하고 싶다면 npx sequelize db:seed:all 을 입력합니다.
 6. 실행은 npm run dev를 하면 됩니다.
 7. 기존 table의 data를 지우고 싶다면 node utils/resetTables.js 를 입력하면 됩니다.
 
