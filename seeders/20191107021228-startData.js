@@ -6,21 +6,21 @@ module.exports = {
     const userData = [
       {
         email: 'aaa@gmail.com',
-        nick: 'aaa',
+        nickname: 'aaa',
         password: await bcrypt.hash('aaa', 10),
         createdAt: new Date(),
         updatedAt: new Date(),
       },
       {
         email: 'bbb@gmail.com',
-        nick: 'bbb',
+        nickname: 'bbb',
         password: await bcrypt.hash('bbb', 10),
         createdAt: new Date(),
         updatedAt: new Date(),
       },
       {
         email: 'ccc@gmail.com',
-        nick: 'ccc',
+        nickname: 'ccc',
         password: await bcrypt.hash('ccc', 10),
         createdAt: new Date(),
         updatedAt: new Date(),

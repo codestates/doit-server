@@ -10,7 +10,7 @@ module.exports = () => {
     try {
       const user = await User.findOne({
         where: { id },
-        attributes: ['id', 'nick', 'email'],
+        attributes: ['id', 'nickname', 'email'],
       });
       return done(null, user);
     } catch (error) {
