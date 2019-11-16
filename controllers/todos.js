@@ -4,7 +4,6 @@ const db = require('../models');
 const getTodos = async (req, res) => {
 	try {
 		const date = moment(req.params.date);
-		console.log('---------------', date);
 		const todos = await db.Todo.findAll({
 			where: [
 				db.sequelize.where(
