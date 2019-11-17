@@ -1,43 +1,29 @@
 const db = require('../models');
-const validate = require('../utils/validate');
+const Validation = require('../utils/validation');
 
 const createTodo = async (req, res) => {
   let transaction;
   try {
     const { todoContent, startedAt, duration } = req.body;
 
-    const validContent = validate.content(todoContent);
-    const validStartedAt = validate.timestamp(startedAt);
-    const validDuration = validate.duration(duration);
-
-    // 기능별 모듈화 고려
-    if (!validContent || !validStartedAt || !validDuration) {
-      let contentError = !validContent ? 'content error' : '';
-      let startError = !validStartedAt
-        ? !validContent
-          ? ' & start time error'
-          : 'start time error'
-        : '';
-      let durationError = !validDuration
-        ? !validContent || !validStartedAt
-          ? ' & duration error'
-          : 'duration error'
-        : '';
-      throw new Error(`${contentError}${startError}${durationError}`);
-    }
+    const validation = new Validation();
+    validation.verifyContent(todoContent);
+    validation.verifyTimestamp(startedAt);
+    validation.verifyDuration(duration);
+    validation.checkError();
 
     transaction = await db.sequelize.transaction();
     const newTodo = await db.Todo.create(
       {
-        todoContent: validContent,
-        duration: validDuration,
+        todoContent: validation.content,
+        duration: validation.duration,
         userId: req.user.id,
       },
       { transaction },
     );
     const newTimeline = await db.Timeline.create(
       {
-        startedAt: validStartedAt,
+        startedAt: validation.duration,
         todoId: newTodo.id,
       },
       { transaction },
@@ -61,13 +47,13 @@ const createTodo = async (req, res) => {
 const pauseTodo = async (req, res) => {
   try {
     const { todoId, timelineId, endedAt } = req.body;
-    const validEndedAt = validate.timestamp(endedAt);
-    if (!validEndedAt) {
-      throw new Error('End time error');
-    }
+
+    const validation = new Validation();
+    validation.verifyTimestamp(endedAt);
+    validation.checkError();
 
     await db.Timeline.update(
-      { endedAt: validEndedAt },
+      { endedAt: validation.timestamp },
       { where: { id: timelineId, todoId } },
     );
     res.status(200).json({
@@ -86,10 +72,10 @@ const pauseTodo = async (req, res) => {
 const resumeTodo = async (req, res) => {
   try {
     const { todoId, startedAt } = req.body;
-    const validResumedAt = validate.timestamp(startedAt);
-    if (!validResumedAt) {
-      throw new Error('Resume time error');
-    }
+
+    const validation = new Validation();
+    validation.verifyTimestamp(startedAt);
+    validation.checkError();
 
     const newTimeline = await db.Timeline.create({ startedAt, todoId });
     return res.status(200).json({
@@ -110,11 +96,14 @@ const completeTodo = async (req, res) => {
   let transaction;
   try {
     const { todoId, timelineId, doneContent, endedAt } = req.body;
-    const validDoneContent = validate.content(doneContent) || 'OK';
-    const validEndedAt = validate.timestamp(endedAt);
-    if (!validEndedAt) {
-      throw new Error('complete time error');
-    }
+
+    const validation = new Validation();
+    validation.verifyTimestamp(endedAt);
+    validation.checkError();
+
+    const validDoneContent = doneContent.trim().length
+      ? doneContent.trim()
+      : 'OK';
 
     transaction = await db.sequelize.transaction();
     await db.Todo.update(
@@ -126,7 +115,7 @@ const completeTodo = async (req, res) => {
       { transaction },
     );
     await db.Timeline.update(
-      { endedAt: validEndedAt },
+      { endedAt: validation.timestamp },
       { where: { id: timelineId, todoId } },
       { transaction },
     );
