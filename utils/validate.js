@@ -21,10 +21,7 @@ validate.timestamp = (timestamp) => {
 
 validate.duration = (duration) => {
   const result = parseInt(duration, 10);
-  if (Number.isNaN(result) || result < 25 || result > 60) {
-    return false;
-  }
-  return result;
+  return Number.isNaN(result) ? false : result;
 };
 
 module.exports = validate;
