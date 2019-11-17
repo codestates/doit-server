@@ -110,23 +110,23 @@ const completeTodo = async (req, res) => {
   let transaction;
   try {
     const { todoId, timelineId, doneContent, endedAt } = req.body;
-    doneContent = validate.content(doneContent);
-    endedAt = validate.timestamp(endedAt);
-    if (!doneContent) {
-      doneContent = 'ok';
-    }
-    if (!endedAt) {
+    const validDoneContent = validate.content(doneContent) || 'OK';
+    const validEndedAt = validate.timestamp(endedAt);
+    if (!validEndedAt) {
       throw new Error('complete time error');
     }
 
     transaction = await db.sequelize.transaction();
     await db.Todo.update(
-      { doneContent, isComplete: true },
+      {
+        doneContent: validDoneContent,
+        isComplete: true,
+      },
       { where: { id: todoId, userId: req.user.id } },
       { transaction },
     );
     await db.Timeline.update(
-      { endedAt },
+      { endedAt: validEndedAt },
       { where: { id: timelineId, todoId } },
       { transaction },
     );
