@@ -1,11 +1,11 @@
 const express = require('express');
 
-const { isLoggedIn } = require('../controllers/middleware');
+const { verifyToken } = require('../controllers/middleware');
 const { getTodos } = require('../controllers/todos');
 
 const router = express.Router();
 
 // GET api/todos/:date
-router.get('/:date', isLoggedIn, getTodos);
+router.get('/:date', verifyToken, getTodos);
 
 module.exports = router;

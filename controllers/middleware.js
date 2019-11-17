@@ -1,4 +1,5 @@
 const db = require('../models');
+const passport = require('passport');
 
 const isLoggedIn = (req, res, next) => {
   if (req.isAuthenticated()) {
@@ -57,4 +58,12 @@ const isExistTimeline = async (req, res, next) => {
   }
 };
 
-module.exports = { isLoggedIn, isNotLoggedIn, isExistTodo, isExistTimeline };
+const verifyToken = passport.authenticate('jwt', { session: false });
+
+module.exports = {
+  isLoggedIn,
+  isNotLoggedIn,
+  isExistTodo,
+  isExistTimeline,
+  verifyToken,
+};
