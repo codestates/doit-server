@@ -46,22 +46,19 @@ const logIn = (req, res, next) => {
       if (loginError) {
         return next(loginError);
       }
-      const token = jwt.sign(
-        {
-          userId: req.user.id,
-          email: req.user.email,
-          nickname: req.user.nickname,
-        },
-        process.env.JWT_SECRET,
-        {
-          expiresIn: '2h',
-          issuer: 'Doit!',
-        },
-      );
+      const result = {
+        userId: req.user.id,
+        email: req.user.email,
+        nickname: req.user.nickname,
+      };
+      result.token = jwt.sign(result, process.env.JWT_SECRET, {
+        expiresIn: '2h',
+        issuer: 'Doit!',
+      });
       return res.status(200).json({
         code: 200,
         message: 'Login success',
-        data: token,
+        data: result,
       });
     });
   })(req, res, next);
