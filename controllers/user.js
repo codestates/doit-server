@@ -55,6 +55,7 @@ const logIn = (req, res, next) => {
         expiresIn: '2h',
         issuer: 'Doit!',
       });
+
       return res.status(200).json({
         code: 200,
         message: 'Login success',
