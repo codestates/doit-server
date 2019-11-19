@@ -23,7 +23,7 @@ const createTodo = async (req, res) => {
     );
     const newTimeline = await db.Timeline.create(
       {
-        startedAt: validation.duration,
+        startedAt: validation.timestamp,
         todoId: newTodo.id,
       },
       { transaction },
