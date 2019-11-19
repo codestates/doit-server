@@ -3,6 +3,7 @@ const morgan = require('morgan');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const dotenv = require('dotenv');
+const helmet = require('helmet');
 const passport = require('passport');
 
 const passportConfig = require('./passport');
@@ -16,13 +17,16 @@ const port = process.env.PORT || 8085;
 db.sequelize.sync();
 passportConfig();
 
-const env = process.env.NODE_ENV === 'production';
-
-env ? app.use(morgan('combined')) : app.use(morgan('dev'));
+if (process.env.NODE_ENV === 'production') {
+  app.use(helmet());
+  app.use(morgan('combined'));
+} else {
+  app.use(morgan('dev'));
+}
 
 app.use(
   cors({
-    origin: env ? 'http://doitreviews.com:3000' : true,
+    origin: true, // front domain 적용 후 production 분기 처리
     credentials: true,
   }),
 );
