@@ -1,23 +1,6 @@
 const db = require('../models');
 const passport = require('passport');
 
-const isLoggedIn = (req, res, next) => {
-  if (req.isAuthenticated()) {
-    //isAuthenticated where ??
-    next();
-  } else {
-    res.status(401).json({ code: 401, message: 'Please login first.' });
-  }
-};
-
-const isNotLoggedIn = (req, res, next) => {
-  if (!req.isAuthenticated()) {
-    next();
-  } else {
-    res.status(401).json({ code: 401, message: 'You should logout first' });
-  }
-};
-
 const isExistTodo = async (req, res, next) => {
   try {
     const todo = await db.Todo.findOne({
@@ -30,9 +13,10 @@ const isExistTodo = async (req, res, next) => {
     }
   } catch (error) {
     console.error(error);
-    res
-      .status(500)
-      .json({ code: 500, message: 'Server error while isExistTodo' });
+    res.status(500).json({
+      code: 500,
+      message: 'Server error while checking whether todo exists',
+    });
   }
 };
 
@@ -61,8 +45,6 @@ const isExistTimeline = async (req, res, next) => {
 const verifyToken = passport.authenticate('jwt', { session: false });
 
 module.exports = {
-  isLoggedIn,
-  isNotLoggedIn,
   isExistTodo,
   isExistTimeline,
   verifyToken,

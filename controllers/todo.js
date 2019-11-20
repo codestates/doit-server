@@ -3,14 +3,14 @@ const Validation = require('../utils/validation');
 
 const createTodo = async (req, res) => {
   let transaction;
+  const validation = new Validation();
   try {
     const { todoContent, startedAt, duration } = req.body;
 
-    const validation = new Validation();
     validation.verifyContent(todoContent);
     validation.verifyTimestamp(startedAt);
     validation.verifyDuration(duration);
-    validation.checkError();
+    validation.checkError(res);
 
     transaction = await db.sequelize.transaction();
     const newTodo = await db.Todo.create(
@@ -29,18 +29,25 @@ const createTodo = async (req, res) => {
       { transaction },
     );
     await transaction.commit();
-    res.status(200).json({
-      code: 200,
+    res.status(201).json({
+      code: 201,
       message: 'todo created successfully',
       data: { todoId: newTodo.id, timelineId: newTimeline.id },
     });
   } catch (error) {
     console.error(error);
-    transaction && (await transaction.rollback());
-    res.status(500).json({
-      code: 500,
-      message: `todo creation failed. ${error.message}`, // 서버 쪽 에러인 경우와 형식 에러인 경우 나눠야 함. 서버쪽 에러일 때 자동으로 뜨는 메세지는?
-    });
+    if (validation.errorMessages.length) {
+      return res.status(400).json({
+        code: 400,
+        message: error.message,
+      });
+    } else {
+      transaction && (await transaction.rollback());
+      res.status(500).json({
+        code: 500,
+        message: `todo creation failed. ${error.message}`,
+      });
+    }
   }
 };
 
@@ -64,7 +71,7 @@ const pauseTodo = async (req, res) => {
     console.error(error);
     res.status(500).json({
       code: 500,
-      message: `todo pause failed. ${error.message}`, // 서버 쪽 에러인 경우와 형식 에러인 경우 나눠야 함.
+      message: `todo pause failed. ${error.message}`,
     });
   }
 };
@@ -78,8 +85,8 @@ const resumeTodo = async (req, res) => {
     validation.checkError();
 
     const newTimeline = await db.Timeline.create({ startedAt, todoId });
-    return res.status(200).json({
-      code: 200,
+    return res.status(201).json({
+      code: 201,
       message: 'Resumed successfully.',
       data: { todoId, timelineId: newTimeline.id },
     });
@@ -87,7 +94,7 @@ const resumeTodo = async (req, res) => {
     console.error(error);
     res.status(500).json({
       code: 500,
-      message: `Resume failed ${error.message}.`, // 서버 쪽 에러인 경우와 형식 에러인 경우 나눠야 함.
+      message: `Resume failed ${error.message}.`,
     });
   }
 };
@@ -181,7 +188,7 @@ const deleteTodo = async (req, res) => {
     console.error(error);
     res
       .status(500)
-      .json({ code: 500, message: 'todo delete failed d/t server problem' });
+      .json({ code: 500, message: `todo delete failed, ${error.message}` });
   }
 };
 
