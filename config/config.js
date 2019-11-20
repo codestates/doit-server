@@ -9,6 +9,10 @@ module.exports = {
     database: process.env.DEV_DATABASE,
     host: process.env.DEV_HOST,
     dialect: process.env.DEV_DIALECT,
+    dialectOptions: {
+      useUTC: false,
+    },
+    timezone: '+09:00',
   },
   production: {
     username: process.env.PRD_USERNAME,

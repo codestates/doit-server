@@ -3,9 +3,6 @@ const moment = require('moment');
 class Validation {
   constructor() {
     this.errorMessages = [];
-    this.content = '';
-    this.timestamp = '';
-    this.duration = 0;
   }
 
   verifyContent(content) {
@@ -29,7 +26,7 @@ class Validation {
 
   verifyDuration(duration) {
     const result = parseInt(duration, 10);
-    if (!Number.isNaN(result) && result > 0) {
+    if (!Number.isNaN(result) && result >= 0) {
       this.duration = result;
     } else {
       this.errorMessages.push('duration error');
@@ -40,7 +37,6 @@ class Validation {
     if (this.errorMessages.length) {
       throw new Error(this.errorMessages.join(' & '));
     }
-    return;
   }
 }
 

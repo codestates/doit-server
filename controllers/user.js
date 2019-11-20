@@ -6,7 +6,6 @@ const db = require('../models');
 
 const signUp = async (req, res, next) => {
   const { email, nickname, password } = req.body;
-  // 각각에 대한 validation. 특히 email.
   try {
     const exUser = await db.User.findOne({ where: { email } });
     if (exUser) {
@@ -25,7 +24,7 @@ const signUp = async (req, res, next) => {
       .json({ code: 200, message: 'User registered successfully.' });
   } catch (error) {
     console.error(error);
-    next(error); // 이렇게 넘기면 어디로?
+    res.status(500).json({ code: 500, message: 'SignUp has failed' });
   }
 };
 
@@ -66,8 +65,6 @@ const logIn = (req, res, next) => {
 };
 
 const logOut = (req, res) => {
-  req.logout();
-  req.session.destroy();
   res.status(200).json({ code: 200, message: 'Logout success' });
 };
 
