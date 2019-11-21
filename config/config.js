@@ -9,7 +9,6 @@ module.exports = {
     database: process.env.DEV_DATABASE,
     host: process.env.DEV_HOST,
     dialect: process.env.DEV_DIALECT,
-    timezone: '+09:00',
   },
   production: {
     username: process.env.PRD_USERNAME,
@@ -18,7 +17,6 @@ module.exports = {
     host: process.env.PRD_HOST,
     dialect: process.env.PRD_DIALECT,
     logging: false,
-    timezone: '+09:00',
   },
   test: {
     username: process.env.TEST_USERNAME,
@@ -26,6 +24,5 @@ module.exports = {
     database: process.env.TEST_DATABASE,
     host: process.env.TEST_HOST,
     dialect: process.env.TEST_DIALECT,
-    timezone: '+09:00',
   },
 };

@@ -7,7 +7,7 @@ const getTodos = async (req, res) => {
     const todos = await db.Todo.findAll({
       where: [
         db.sequelize.where(
-          db.sequelize.fn('date', db.sequelize.col('todo.createdAt')),
+          db.sequelize.fn('date', db.sequelize.col('todo.startLocalDate')),
           '=',
           date.format('YYYYMMDD'),
         ),

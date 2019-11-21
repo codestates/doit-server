@@ -1,5 +1,11 @@
+const moment = require('moment');
+
 const db = require('../models');
 const Validation = require('../utils/validation');
+
+const calcLocalDateFromUTC = (utc) => {
+  return moment(utc).format('YYYY-MM-DD');
+};
 
 const createTodo = async (req, res) => {
   let transaction;
@@ -13,10 +19,12 @@ const createTodo = async (req, res) => {
     validation.checkError(res);
 
     transaction = await db.sequelize.transaction();
+    const todoStartLocalDate = calcLocalDateFromUTC(validation.timestamp);
     const newTodo = await db.Todo.create(
       {
         todoContent: validation.content,
         duration: validation.duration,
+        startLocalDate: todoStartLocalDate,
         userId: req.user.id,
       },
       { transaction },

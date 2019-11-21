@@ -13,6 +13,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
       },
+      startLocalDate: {
+        type: DataTypes.DATEONLY,
+        allowNull: false,
+      },
       isComplete: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
