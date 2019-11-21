@@ -15,11 +15,11 @@
 
    COOKIE_SECRET=YOUR_SECRETNAME
 
-   DEVLOCAL_USERNAME=root
-   DEVLOCAL_PASSWORD=YOUR_PASSWORD
-   DEVLOCAL_DATABASE=doit
-   DEVLOCAL_HOST=127.0.0.1
-   DEVLOCAL_DIALECT=mysql
+   DEV_USERNAME=root
+   DEV_PASSWORD=YOUR_PASSWORD
+   DEV_DATABASE=doit
+   DEV_HOST=127.0.0.1
+   DEV_DIALECT=mysql
 
 3. npm i 를 하여 package.json의 module들을 install 합니다.
 4. npx sequelize db:create를 터미널에 입력하여 mysql에 db schema를 생성합니다.
