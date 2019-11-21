@@ -15,8 +15,7 @@ class Validation {
   }
 
   verifyTimestamp(timestamp) {
-    const dateFormat = 'YYYY-MM-DD HH:mm:ss';
-    const result = moment(timestamp, dateFormat, true);
+    const result = moment(timestamp);
     if (result.isValid()) {
       this.timestamp = timestamp;
     } else {
