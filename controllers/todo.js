@@ -37,7 +37,7 @@ const createTodo = async (req, res) => {
   } catch (error) {
     console.error(error);
     if (validation.errorMessages.length) {
-      return res.status(400).json({
+      res.status(400).json({
         code: 400,
         message: error.message,
       });
@@ -52,10 +52,10 @@ const createTodo = async (req, res) => {
 };
 
 const pauseTodo = async (req, res) => {
+  const validation = new Validation();
   try {
     const { todoId, timelineId, endedAt } = req.body;
 
-    const validation = new Validation();
     validation.verifyTimestamp(endedAt);
     validation.checkError();
 
@@ -69,42 +69,56 @@ const pauseTodo = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({
-      code: 500,
-      message: `todo pause failed. ${error.message}`,
-    });
+    if (validation.errorMessages.length) {
+      res.status(400).json({
+        code: 400,
+        message: error.message,
+      });
+    } else {
+      res.status(500).json({
+        code: 500,
+        message: `todo pause failed. ${error.message}`,
+      });
+    }
   }
 };
 
 const resumeTodo = async (req, res) => {
+  const validation = new Validation();
   try {
     const { todoId, startedAt } = req.body;
 
-    const validation = new Validation();
     validation.verifyTimestamp(startedAt);
     validation.checkError();
 
     const newTimeline = await db.Timeline.create({ startedAt, todoId });
-    return res.status(201).json({
+    res.status(201).json({
       code: 201,
       message: 'Resumed successfully.',
       data: { todoId, timelineId: newTimeline.id },
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({
-      code: 500,
-      message: `Resume failed ${error.message}.`,
-    });
+    if (validation.errorMessages.length) {
+      res.status(400).json({
+        code: 400,
+        message: error.message,
+      });
+    } else {
+      res.status(500).json({
+        code: 500,
+        message: `Resume failed ${error.message}.`,
+      });
+    }
   }
 };
 
 const completeTodo = async (req, res) => {
   let transaction;
+  const validation = new Validation();
   try {
     const { todoId, timelineId, doneContent, endedAt } = req.body;
 
-    const validation = new Validation();
     validation.verifyTimestamp(endedAt);
     validation.checkError();
 
@@ -134,11 +148,18 @@ const completeTodo = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    transaction && (await transaction.rollback());
-    res.status(500).json({
-      code: 500,
-      message: `todo completion failed. ${error.message}`,
-    });
+    if (validation.errorMessages.length) {
+      return res.status(400).json({
+        code: 400,
+        message: error.message,
+      });
+    } else {
+      transaction && (await transaction.rollback());
+      res.status(500).json({
+        code: 500,
+        message: `todo completion failed. ${error.message}`,
+      });
+    }
   }
 };
 
