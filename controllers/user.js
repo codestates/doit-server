@@ -1,8 +1,8 @@
 const bcrypt = require('bcrypt');
 const passport = require('passport');
-const jwt = require('jsonwebtoken');
 
 const db = require('../models');
+const { addToken } = require('../utils/token');
 
 const signUp = async (req, res, next) => {
   const { email, nickname, password } = req.body;
@@ -14,14 +14,18 @@ const signUp = async (req, res, next) => {
         .json({ code: 403, message: 'This email is already registered.' });
     }
     const passwordHash = await bcrypt.hash(password, 10);
-    await db.User.create({
+    const newUser = await db.User.create({
       email,
       nickname,
       password: passwordHash,
     });
-    res
-      .status(200)
-      .json({ code: 200, message: 'User registered successfully.' });
+    const result = addToken(newUser);
+
+    res.status(200).json({
+      code: 200,
+      message: 'User registered successfully.',
+      data: result,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ code: 500, message: 'SignUp has failed' });
@@ -45,15 +49,7 @@ const logIn = (req, res, next) => {
       if (loginError) {
         return next(loginError);
       }
-      const result = {
-        userId: req.user.id,
-        email: req.user.email,
-        nickname: req.user.nickname,
-      };
-      result.token = jwt.sign(result, process.env.JWT_SECRET, {
-        expiresIn: '2h',
-        issuer: 'Doit!',
-      });
+      const result = addToken(req.user);
 
       return res.status(200).json({
         code: 200,
