@@ -7,9 +7,17 @@ const getTodos = async (req, res) => {
     const todos = await db.Todo.findAll({
       where: [
         db.sequelize.where(
-          db.sequelize.fn('date', db.sequelize.col('todo.startLocalDate')),
+          db.sequelize.fn(
+            'date',
+            db.sequelize.fn(
+              'CONVERT_TZ',
+              db.sequelize.col('todo.createdAt'),
+              '+00:00',
+              '+09:00',
+            ),
+          ),
           '=',
-          date.format('YYYYMMDD'),
+          date.format('YYYY-MM-DD'),
         ),
         { userId: req.user.id },
       ],
@@ -24,6 +32,27 @@ const getTodos = async (req, res) => {
         { model: db.Timeline, attributes: ['id', 'startedAt', 'endedAt'] },
       ],
     });
+
+    // const todos = await db.Todo.findAll({
+    //   where: [
+    //     db.sequelize.where(
+    //       db.sequelize.fn('date', db.sequelize.col('todo.startLocalDate')),
+    //       '=',
+    //       date.format('YYYYMMDD'),
+    //     ),
+    //     { userId: req.user.id },
+    //   ],
+    //   attributes: [
+    //     'id',
+    //     'todoContent',
+    //     'doneContent',
+    //     'duration',
+    //     'isComplete',
+    //   ],
+    //   include: [
+    //     { model: db.Timeline, attributes: ['id', 'startedAt', 'endedAt'] },
+    //   ],
+    // });
 
     res
       .status(200)
