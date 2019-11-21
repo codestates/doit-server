@@ -18,7 +18,7 @@ class Validation {
     const dateFormat = 'YYYY-MM-DD HH:mm:ss';
     const result = moment(timestamp, dateFormat, true);
     if (result.isValid()) {
-      this.timestamp = result;
+      this.timestamp = timestamp;
     } else {
       this.errorMessages.push('time error');
     }
