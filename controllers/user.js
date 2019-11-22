@@ -9,9 +9,10 @@ const signUp = async (req, res, next) => {
   try {
     const exUser = await db.User.findOne({ where: { email } });
     if (exUser) {
-      return res
-        .status(403)
-        .json({ code: 403, message: 'This email is already registered.' });
+      return res.status(403).json({
+        code: 403,
+        message: '이미 등록된 이메일입니다.',
+      });
     }
     const passwordHash = await bcrypt.hash(password, 10);
     const newUser = await db.User.create({
@@ -28,7 +29,7 @@ const signUp = async (req, res, next) => {
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ code: 500, message: 'SignUp has failed' });
+    res.status(500).json({ code: 500, message: '회원 가입 실패.' });
   }
 };
 
