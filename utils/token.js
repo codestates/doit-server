@@ -10,7 +10,7 @@ const addToken = (userInfo) => {
     nickname: userInfo.nickname,
   };
   result.token = jwt.sign(result, process.env.JWT_SECRET, {
-    expiresIn: '2h',
+    expiresIn: process.env.JWT_EXPIRATION_PERIOD,
     issuer: 'Doit!',
   });
 
