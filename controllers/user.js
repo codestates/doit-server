@@ -83,21 +83,20 @@ const googleAuth = async (req, res, next) => {
     );
     const { email, name, sub } = response.data;
 
-    const [user, created] = db.User.findOrCreate({
+    const [user, created] = await db.User.findOrCreate({
       where: {
         email,
         provider,
       },
-      default: {
+      defaults: {
         email,
         nickname: name,
         snsId: sub,
         provider,
       },
     });
-    console.log('FindOrCreate: ', user, created);
-    const result = addToken(user);
 
+    const result = addToken(user);
     res.status(200).json({
       code: 200,
       message: 'Google auth success.',
