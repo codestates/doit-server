@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const passport = require('passport');
+const axios = require('axios');
 
 const db = require('../models');
 const { addToken } = require('../utils/token');
@@ -73,4 +74,39 @@ const getUserInfo = async (req, res) => {
   });
 };
 
-module.exports = { signUp, logIn, logOut, getUserInfo };
+const googleAuth = async (req, res, next) => {
+  const provider = 'google';
+  const { token } = req.body;
+  try {
+    const response = await axios.get(
+      `https://oauth2.googleapis.com/tokeninfo?id_token=${token}`,
+    );
+    const { email, name, sub } = response.data;
+
+    const [user, created] = db.User.findOrCreate({
+      where: {
+        email,
+        provider,
+      },
+      default: {
+        email,
+        nickname: name,
+        snsId: sub,
+        provider,
+      },
+    });
+    console.log('FindOrCreate: ', user, created);
+    const result = addToken(user);
+
+    res.status(200).json({
+      code: 200,
+      message: 'Google auth success.',
+      data: result,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ code: 500, message: 'Google auth fail.' });
+  }
+};
+
+module.exports = { signUp, logIn, logOut, getUserInfo, googleAuth };
