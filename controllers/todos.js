@@ -3,24 +3,17 @@ const db = require('../models');
 
 const getTodos = async (req, res) => {
   try {
-    const date = moment(req.params.date);
+    const utcFrom = moment(req.params.date).utc();
+    const utcTo = utcFrom.clone().add(1, 'd');
+    const Op = db.Sequelize.Op;
     const todos = await db.Todo.findAll({
-      where: [
-        db.sequelize.where(
-          db.sequelize.fn(
-            'date',
-            db.sequelize.fn(
-              'CONVERT_TZ',
-              db.sequelize.col('todo.createdAt'),
-              '+00:00',
-              '+09:00',
-            ),
-          ),
-          '=',
-          date.format('YYYY-MM-DD'),
-        ),
-        { userId: req.user.id },
-      ],
+      where: {
+        createdAt: {
+          [Op.gte]: utcFrom,
+          [Op.lt]: utcTo,
+        },
+        userId: req.user.id,
+      },
       attributes: [
         'id',
         'todoContent',
@@ -32,27 +25,6 @@ const getTodos = async (req, res) => {
         { model: db.Timeline, attributes: ['id', 'startedAt', 'endedAt'] },
       ],
     });
-
-    // const todos = await db.Todo.findAll({
-    //   where: [
-    //     db.sequelize.where(
-    //       db.sequelize.fn('date', db.sequelize.col('todo.startLocalDate')),
-    //       '=',
-    //       date.format('YYYYMMDD'),
-    //     ),
-    //     { userId: req.user.id },
-    //   ],
-    //   attributes: [
-    //     'id',
-    //     'todoContent',
-    //     'doneContent',
-    //     'duration',
-    //     'isComplete',
-    //   ],
-    //   include: [
-    //     { model: db.Timeline, attributes: ['id', 'startedAt', 'endedAt'] },
-    //   ],
-    // });
 
     res
       .status(200)
