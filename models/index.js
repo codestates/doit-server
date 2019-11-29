@@ -15,6 +15,7 @@ const sequelize = new Sequelize(
 db.User = require('./user')(sequelize, Sequelize);
 db.Todo = require('./todo')(sequelize, Sequelize);
 db.Timeline = require('./timeline')(sequelize, Sequelize);
+db.Feedback = require('./feedback')(sequelize, Sequelize);
 
 Object.keys(db).forEach((modelName) => {
   if (db[modelName].associate) {
