@@ -36,5 +36,12 @@ module.exports = (sequelize, DataTypes) => {
     });
   };
 
+  User.associate = (db) => {
+    db.User.hasMany(db.Feedback, {
+      sourceKey: 'id',
+      foreignKey: 'userId',
+    });
+  };
+
   return User;
 };
