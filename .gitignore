@@ -1,0 +1,14 @@
+## node modules
+node_modules
+
+## dotenv
+.env
+
+## vscode
+.vscode
+
+## pem
+*.pem
+
+## sh
+connect.sh
