@@ -1,15 +1,14 @@
-const db = require('../models');
-
 const Slack = require('slack-node');
 
-const webhookUri = process.env.SLACKwebhookURL;
+const db = require('../models');
 
+const webhookUri = process.env.SLACKwebhookURL;
 const slack = new Slack();
 slack.setWebhook(webhookUri);
 const send = async (message) => {
   slack.webhook(
     {
-      channel: '#doit', // 전송될 슬랙 채널
+      channel: '#doit-feedback', // 전송될 슬랙 채널
       username: message.nickname, //슬랙에 표시될 이름
       text: message.content,
     },
@@ -20,16 +19,16 @@ const send = async (message) => {
 };
 
 const feedback = async (req, res, next) => {
-  const { content, userId, nickname } = req.body;
+  const { content } = req.body;
 
   try {
     await db.Feedback.create({
       content,
-      userId,
-      nickname,
+      userId: req.user.id,
+      nickname: req.user.nickname,
     });
 
-    send({ nickname, content });
+    send({ nickname: req.user.nickname, content });
 
     res.status(200).json({
       code: 200,
