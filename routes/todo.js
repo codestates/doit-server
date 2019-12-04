@@ -23,7 +23,7 @@ router.post('/pause', verifyToken, isExistTodo, isExistTimeline, pauseTodo);
 // POST api/todo/resume-- todo 다시 시작
 router.post('/resume', verifyToken, isExistTodo, resumeTodo);
 
-// POST api/todo -- todo 종료
+// PATCH api/todo -- todo 종료
 router.patch('/', verifyToken, isExistTodo, isExistTimeline, completeTodo);
 
 // GET api/todo/:todoId

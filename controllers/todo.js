@@ -145,11 +145,16 @@ const completeTodo = async (req, res) => {
       { where: { id: todoId, userId: req.user.id } },
       { transaction },
     );
-    await db.Timeline.update(
+
+    let data = await db.Timeline.findAll({
+      where: { todoId },
+    });
+    await data[data.length - 1].update(
       { endedAt: validation.timestamp },
       { where: { id: timelineId, todoId } },
       { transaction },
     );
+
     await transaction.commit();
 
     res.status(200).json({

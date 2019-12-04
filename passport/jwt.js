@@ -10,7 +10,6 @@ const ExtractJWT = passportJWT.ExtractJwt;
 dotenv.config();
 
 module.exports = () => {
-  // console.log('JWT START');
   passport.use(
     new JWTStrategy(
       {
