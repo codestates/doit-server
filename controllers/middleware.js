@@ -10,6 +10,7 @@ const isExistTodo = async (req, res, next) => {
     if (todo) {
       next();
     } else {
+      console.error('todo not found.');
       return res.status(400).json({ code: 400, message: 'todo not found.' });
     }
   } catch (error) {
@@ -33,6 +34,7 @@ const isExistTimeline = async (req, res, next) => {
     if (timeline) {
       next();
     } else {
+      console.error('timeline not found.');
       return res
         .status(400)
         .json({ code: 400, message: 'timeline not found.' });
