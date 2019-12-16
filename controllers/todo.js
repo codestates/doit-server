@@ -156,9 +156,7 @@ const completeTodo = async (req, res) => {
     if (lastTimeline.endedAt) {
       await db.Timeline.create(
         {
-          startedAt: moment(
-            moment(validation.timestamp).valueOf() - 1,
-          ).format(),
+          startedAt: validation.timestamp,
           endedAt: validation.timestamp,
           todoId,
         },
