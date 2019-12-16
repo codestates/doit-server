@@ -146,11 +146,29 @@ const completeTodo = async (req, res) => {
       { transaction },
     );
 
-    await db.Timeline.update(
-      { endedAt: validation.timestamp },
-      { where: { id: timelineId, todoId } },
+    const lastTimeline = await db.Timeline.findOne(
+      {
+        where: { id: timelineId, todoId },
+      },
       { transaction },
     );
+
+    if (lastTimeline.endedAt) {
+      await db.Timeline.create(
+        {
+          startedAt: validation.timestamp,
+          endedAt: validation.timestamp,
+          todoId,
+        },
+        { transaction },
+      );
+    } else {
+      await db.Timeline.update(
+        { endedAt: validation.timestamp },
+        { where: { id: timelineId, todoId } },
+        { transaction },
+      );
+    }
 
     await transaction.commit();
 
